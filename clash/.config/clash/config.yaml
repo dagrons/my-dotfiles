@@ -24,9 +24,10 @@ secret: ""
 
 
 dns:
-  enable: false # set true to enable dns (default is false)
-  listen: 127.0.0.1:53
+  enable: true # set true to enable dns (default is false)
+  # listen: 127.0.0.1:53
   nameserver:
+     - 127.0.0.1
      - 119.29.29.29
      - 114.114.114.114
   fallback: # concurrent request with nameserver, fallback used when GEOIP country isn't CN
