@@ -7,6 +7,8 @@ port: 7890
 # port of SOCKS5
 socks-port: 7891
 
+redir-port: 7892
+
 allow-lan: true
 
 # Rule / Global/ DIRECT (default is Rule)
@@ -22,12 +24,16 @@ external-controller: 127.0.0.1:9090
 # Secret for RESTful API (Optional)
 secret: ""
 
+# dns工作如下：
+# nameserver和fallback进行并发查询，并选取nameserver中最先响应的结果作为基准，
+# 使用GEOIP判断IP的所属区域，如果国内或保留地址则直接响应给客服端，其他情况则把fallback中的结果响应给客服端
+
 
 dns:
   enable: true # set true to enable dns (default is false)
-  # listen: 127.0.0.1:53
+  listen: 0.0.0.0:1053
   nameserver:
-     - 127.0.0.1
+     - 10.112.31.202
      - 119.29.29.29
      - 114.114.114.114
   fallback: # concurrent request with nameserver, fallback used when GEOIP country isn't CN
