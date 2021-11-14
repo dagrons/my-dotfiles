@@ -34,8 +34,8 @@ dns:
   listen: 0.0.0.0:1053
   nameserver:
      - 10.112.31.202
-     - 119.29.29.29
-     - 114.114.114.114
+#     - 119.29.29.29
+#     - 114.114.114.114
   fallback: # concurrent request with nameserver, fallback used when GEOIP country isn't CN
      - https://1.1.1.1/dns-query
      - tls://1.0.0.1:853

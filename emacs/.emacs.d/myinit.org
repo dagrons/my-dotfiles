@@ -1,3 +1,4 @@
+
 +STARTUP: overview
 #+PROPERTY: header-args :comments yes :results silent
 * repos
@@ -16,6 +17,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+END_SRC
 * org-mode
+# 纯属美化效果
   #+BEGIN_SRC emacs-lisp
 (use-package org-bullets 
 ;; to customize org-mode
@@ -24,6 +26,7 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   #+END_SRC
 * ivy
+# 基于trie的跳转神器
   #+BEGIN_SRC emacs-lisp 
 (use-package avy 
 ;; which allows you jump you cursor suprisingly fast
@@ -31,6 +34,7 @@
 :bind ("M-s" . avy-goto-char))
   #+END_SRC 
 * swiper
+# 优化minibuffer的搜索和补全体验
   #+BEGIN_SRC emacs-lisp
 
 
@@ -304,87 +308,15 @@ narrowed."
     :ensure t
     :config
        (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
        (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-	     (setq web-mode-engines-alist
-	     '(("django"    . "\\.html\\'")))
-	      (setq web-mode-ac-sources-alist
-		 '(("css" . (ac-source-css-property))
-		    ("vue" . (ac-source-words-in-buffer ac-source-abbrev))
-         ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-(setq web-mode-enable-auto-closing t))
-(setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
+       (setq web-mode-engines-alist
+       '(("django"    . "\\.html\\'")))
+       (setq web-mode-ac-sources-alist
+       '(("css" . (ac-source-css-property))
+       ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+       (setq web-mode-enable-auto-closing t))
+       (setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
   #+END_SRC
-* javascript
-  #+BEGIN_SRC emacs-lisp
-(use-package js2-mode
-:ensure t
-:ensure ac-js2
-:init
-(progn
-(add-hook 'js-mode-hook 'js2-minor-mode)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
-))
-
-(use-package js2-refactor
-;; A javascript refactoring library for emacs 
-:ensure t
-:config 
-(progn
-(js2r-add-keybindings-with-prefix "C-c C-m")
-;; eg. extract function with `C-c C-m ef`.
-(add-hook 'js2-mode-hook #'js2-refactor-mode)))
-
-(use-package tern
-;; This is Tern. Tern is a stand-alone, editor-independent JavaScript analyzer that can be used to improve the JavaScript integration of existing editors.
-:ensure tern
-:ensure tern-auto-complete
-:config
-(progn
-(add-hook 'js-mode-hook (lambda () (tern-mode t)))
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-;;(tern-ac-setup)
-))
-
-;;(use-package jade
-;;:ensure t
-;;)
-
-;; use web-mode for .jsx files
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-
-
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(javascript-jshint)))
-
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(json-jsonlist)))
-
-;; adjust indents for web-mode to 2 spaces
-(defun my-web-mode-hook ()
-  "Hooks for Web mode. Adjust indents"
-  ;;; http://web-mode.org/
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2))
-
-(add-hook 'web-mode-hook  'my-web-mode-hook) ;; add my-web-mode-hook to web-mode-hook
-  #+END_SRC
-
 * better-shell
 #+BEGIN_SRC emacs-lisp
   (use-package better-shell
@@ -410,7 +342,9 @@ narrowed."
 :ensure t
 :custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
 :config 
-(elpy-enable))
+(elpy-enable)
+(setq elpy-rpc-python-command "/usr/bin/python3")
+)
 
 (use-package virtualenvwrapper
 :ensure t
@@ -418,30 +352,16 @@ narrowed."
 (venv-initialize-interactive-shells)
 (venv-initialize-eshell))
 
+(use-package jedi
+:ensure t
+:init
+(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'jedi:ac-setup))
+
 #+END_SRC
 
-* prodigy
-#+BEGIN_SRC emacs-lisp
-(use-package prodigy
-:ensure t
-:config
-(prodigy-define-service
-:name "nikola"
-:command "nikola"
-:args '("auto")
-:cwd "/home/heyuehui/dagrons.github.io"
-:tags '(blog nikola)
-:stop-signal 'sigint
-:kill-process-buffer-on-stop t))
-#+END_SRC
-* nikola
-#+BEGIN_SRC emacs-lisp
-(defun z/nikola-deploy () ""
-(interactive)
-(venv-with-virtualenv "blog" (shell-command "cd ~/dagrons.github.io; nikola github_deploy"))
-)
-#+END_SRC
 * atomic-chrome
+# 在浏览器中使用emacs
 #+BEGIN_SRC emacs-lisp
 (use-package atomic-chrome
 :ensure t

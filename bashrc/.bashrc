@@ -160,8 +160,8 @@ export WINDOWS_HOST="host.docker.internal"
 #================
 # proxy
 #================
-export socks_proxy=socks://localhost:7891
-export http_proxy=http://localhost:7890
+#export socks_proxy=socks://localhost:7891
+#export http_proxy=http://localhost:7890
 
 
 #===============
@@ -193,3 +193,7 @@ export GOPROXY=https://goproxy.cn
 #==================
 export DOCKER_CLIENT_TIMEOUT=600
 export COMPOSE_HTTP_TIMEOUT=600
+
+# emacs pinyin
+export LANG="en_US.UTF-8"
+export LC_CTYPE="zh_CN.UTF-8"
