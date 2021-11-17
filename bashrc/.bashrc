@@ -185,7 +185,9 @@ alias exp=explorer.exe
 #==================
 # go
 #==================
-export PATH=$PATH:/usr/local/go/bin
+export PATH=/usr/local/go/bin:$PATH
+export GOPATH="$(go env GOPATH)"
+export PATH=$GOPATH/bin:$PATH
 export GOPROXY=https://goproxy.cn
 
 #==================

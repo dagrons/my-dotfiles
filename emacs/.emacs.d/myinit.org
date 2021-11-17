@@ -1,5 +1,4 @@
-
-+STARTUP: overview
+#+STARTUP: overview
 #+PROPERTY: header-args :comments yes :results silent
 * repos
   #+BEGIN_SRC emacs-lisp
@@ -391,4 +390,37 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 #+BEGIN_SRC emacs-lisp
 (use-package htmlize
 :ensure t)
+#+END_SRC
+* nyan-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package nyan-mode
+    :ensure t
+    :config
+    (nyan-mode t))
+#+END_SRC
+
+* go
+
+#+BEGIN_SRC emacs-lisp
+  (defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+  (use-package lsp-mode
+    :ensure t
+    :init
+    (add-hook 'go-mode-hook #'lsp-deferred)
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+    (add-hook 'go-mode-hook (lambda() (company-mode -1)))
+    (add-hook 'go-mode-hook (lambda() (auto-complete-mode -1)))
+    (add-hook 'go-mode-hook (lambda()
+			      (setq tab-width 4)
+			      (setq indent-tabs-mode 1)))
+    :config
+    (lsp-register-custom-settings
+     '(("gopls.completeUnimported" t t)
+       ("gopls.staticcheck" t t))))
+
+  (use-package lsp-ui
+    :ensure t)
 #+END_SRC
