@@ -18,11 +18,23 @@
 * org-mode
 # 纯属美化效果
   #+BEGIN_SRC emacs-lisp
-(use-package org-bullets 
-;; to customize org-mode
-:ensure t
-:config
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+	(use-package org-bullets 
+	  ;; to customize org-mode
+	  :ensure t
+	  :config
+	  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+	  (add-hook 'org-mode-hook (lambda () (setq tab-width 4))))
+
+	(use-package ob-go
+	  :ensure t)
+
+	(setq org-confirm-babel-evaluate nil)
+
+	(org-babel-do-load-languages
+	 'org-babel-load-languages '((python . t)
+					 (go . t)
+					 (C . t)
+					 (shell . t)))
   #+END_SRC
 * ivy
 # 基于trie的跳转神器
@@ -319,9 +331,19 @@ narrowed."
 * better-shell
 #+BEGIN_SRC emacs-lisp
   (use-package better-shell
-    :ensure t)
+		:ensure t)
   (add-hook 'shell-mode-hook (lambda() 
-			       (company-mode -1)) 'append)
+				   (company-mode -1)) 'append)
+
+  (defun my-clear ()
+		(interactive)
+		(erase-buffer)
+		(comint-send-input))
+
+  (defun my-shell-hook ()
+		(local-set-key (kbd "C-l") 'my-clear))
+
+  (add-hook 'shell-mode-hook 'my-shell-hook)
 #+END_SRC
 * git
 #+BEGIN_SRC emacs-lisp
@@ -338,29 +360,34 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(setq py-python-command "python3")
-(setq python-shell-interpreter "python3")
+  (setq py-python-command "python3")
+  (setq python-shell-interpreter "python3")
 
-(use-package elpy
-;; elpy is the Emacs Python Development Environment. it aims to provide an easy to install, fully-featured environment for Python development
-:ensure t
-:custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
-:config 
-(elpy-enable)
-(setq elpy-rpc-python-command "/usr/bin/python3")
-)
+  (use-package elpy
+    ;; elpy is the Emacs Python Development Environment. it aims to provide an easy to install, fully-featured environment for Python development
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook (lambda ()
+				  (setq tab-width 4) 
+				  (setq indent-tabs-mode t)
+				  (setq py-indent-tabs-mode t)))
+    :custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
+    :config 
+    (elpy-enable)
+    (setq elpy-rpc-python-command "/usr/bin/python3")
+    )
 
-(use-package virtualenvwrapper
-:ensure t
-:config 
-(venv-initialize-interactive-shells)
-(venv-initialize-eshell))
+  (use-package virtualenvwrapper
+    :ensure t
+    :config 
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell))
 
-(use-package jedi
-:ensure t
-:init
-(add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'python-mode-hook 'jedi:ac-setup))
+  (use-package jedi
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 #+END_SRC
 
@@ -400,7 +427,7 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 #+END_SRC
 
 * go
-
+  
 #+BEGIN_SRC emacs-lisp
   (defun lsp-go-install-save-hooks ()
     (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -423,4 +450,8 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 
   (use-package lsp-ui
     :ensure t)
+#+END_SRC
+* agenda
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files '("~/*.ag.org"))
 #+END_SRC
