@@ -34,7 +34,8 @@
 	 'org-babel-load-languages '((python . t)
 					 (go . t)
 					 (C . t)
-					 (shell . t)))
+					 (shell . t)
+					 (dot . t)))
   #+END_SRC
 * ivy
 # 基于trie的跳转神器
@@ -455,3 +456,11 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files '("~/*.ag.org"))
 #+END_SRC
+* dot
+  #+BEGIN_SRC emacs-lisp
+	(use-package graphviz-dot-mode
+	  :ensure t
+	  :config 
+	  (setq graphviz-dot-indent-width 4))
+	(use-package company-graphviz-dot)
+  #+END_SRC 
