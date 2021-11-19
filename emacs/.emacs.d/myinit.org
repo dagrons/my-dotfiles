@@ -36,6 +36,8 @@
 					 (C . t)
 					 (shell . t)
 					 (dot . t)))
+	(use-package ox-reveal
+	  :ensure t)
   #+END_SRC
 * ivy
 # 基于trie的跳转神器
@@ -454,7 +456,7 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 #+END_SRC
 * agenda
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files '("~/*.ag.org"))
+  (setq org-agenda-files '("~/agenda"))
 #+END_SRC
 * dot
   #+BEGIN_SRC emacs-lisp
