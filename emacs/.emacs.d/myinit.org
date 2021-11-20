@@ -38,6 +38,8 @@
 					 (dot . t)))
 	(use-package ox-reveal
 	  :ensure t)
+
+	(use-package ox-freemind)
   #+END_SRC
 * ivy
 # 基于trie的跳转神器

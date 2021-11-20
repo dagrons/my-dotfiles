@@ -2,6 +2,8 @@
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
 			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
+(add-to-list 'load-path "~/.emacs.d/contrib/")
+
 ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 ;; (add-to-list 'package-archives '("elpa" . "https://elpa.gnu.org/packages/"))
 
@@ -15,8 +17,6 @@
 ;; 执行org-babel
 (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
 
-;; 设置默认窗口大小
-(when window-system (set-frame-size (selected-frame) 150 50))
 
 ;; 下面是自动生成的内容
 (custom-set-variables
@@ -37,3 +37,6 @@
 
 
 (put 'erase-buffer 'disabled nil)
+
+;; 设置默认窗口大小
+(when window-system (set-frame-size (selected-frame) 150 50))
