@@ -35,11 +35,14 @@
 					 (go . t)
 					 (C . t)
 					 (shell . t)
-					 (dot . t)))
+					 (dot . t)
+					 (http . t)))
 	(use-package ox-reveal
 	  :ensure t)
 
 	(use-package ox-freemind)
+
+	(global-set-key (kbd "C-c a") 'org-agenda)
   #+END_SRC
 * ivy
 # 基于trie的跳转神器
@@ -122,7 +125,7 @@
   #+BEGIN_SRC emacs-lisp
 ; highlight the current cursor line
 (global-hl-line-mode t) ;; highlight current line
-(set-face-background 'hl-line "#3e4456") ;; customize current line face
+;(set-face-background 'hl-line "#3e4456") ;; customize current line face
 ; flash the cursor's line when you scroll
 (use-package beacon ;; 当前行淡入淡出特效
 :ensure t
@@ -141,7 +144,8 @@
 #+BEGIN_SRC emacs-lisp
 (use-package zenburn-theme
 :ensure t
-:config (load-theme 'zenburn t))
+:config
+(load-theme 'gruvbox-light-soft t))
 #+END_SRC
 * company
   #+BEGIN_SRC emacs-lisp
@@ -369,30 +373,31 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
   (setq python-shell-interpreter "python3")
 
   (use-package elpy
-    ;; elpy is the Emacs Python Development Environment. it aims to provide an easy to install, fully-featured environment for Python development
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook (lambda ()
+	;; elpy is the Emacs Python Development Environment. it aims to provide an easy to install, fully-featured environment for Python development
+	:ensure t
+	:init
+	(add-hook 'python-mode-hook (lambda ()
 				  (setq tab-width 4) 
 				  (setq indent-tabs-mode t)
-				  (setq py-indent-tabs-mode t)))
-    :custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
-    :config 
-    (elpy-enable)
-    (setq elpy-rpc-python-command "/usr/bin/python3")
-    )
+				  (setq py-indent-tabs-mode t)
+				  (setq python-indent-offset 4)))
+	:custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
+	:config 
+	(elpy-enable)
+	(setq elpy-rpc-python-command "/usr/bin/python3")
+	)
 
   (use-package virtualenvwrapper
-    :ensure t
-    :config 
-    (venv-initialize-interactive-shells)
-    (venv-initialize-eshell))
+	:ensure t
+	:config 
+	(venv-initialize-interactive-shells)
+	(venv-initialize-eshell))
 
   (use-package jedi
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'jedi:setup)
-    (add-hook 'python-mode-hook 'jedi:ac-setup))
+	:ensure t
+	:init
+	(add-hook 'python-mode-hook 'jedi:setup)
+	(add-hook 'python-mode-hook 'jedi:ac-setup))
 
 #+END_SRC
 
@@ -468,3 +473,11 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 	  (setq graphviz-dot-indent-width 4))
 	(use-package company-graphviz-dot)
   #+END_SRC 
+* powerline
+
+  #+BEGIN_SRC emacs-lisp
+	(use-package powerline
+	  :ensure t
+	  :config
+	  (powerline-default-theme))
+  #+END_SRC
