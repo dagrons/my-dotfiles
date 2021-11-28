@@ -2,21 +2,31 @@
 #+PROPERTY: header-args :comments yes :results silent
 * repos
   #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+	(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
   #+END_SRC
+
 * which-key
-#+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t 
-  :config
-  (which-key-mode))
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	(use-package which-key
+	  :ensure t 
+	  :config
+	  (which-key-mode))
+  #+END_SRC
+
 * ibuffer
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	(global-set-key (kbd "C-x C-b") 'ibuffer)
+  #+END_SRC
+
 * org-mode
-# 纯属美化效果
+  freemind需要手动安装, go也需要预先在系统中安装
+  go的安装脚本如下:
+  #+BEGIN_SRC shell
+	cd /tmp && wget -q https://dl.google.com/go/go1.17.3.linux-amd64.tar.gz
+	rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.3.linux-amd64.tar.gz
+  #+END_SRC 
+  
+  # 纯属美化效果
   #+BEGIN_SRC emacs-lisp
 	(use-package org-bullets 
 	  ;; to customize org-mode
@@ -44,427 +54,454 @@
 
 	(global-set-key (kbd "C-c a") 'org-agenda)
   #+END_SRC
+
 * ivy
-# 基于trie的跳转神器
+  # 基于trie的跳转神器
   #+BEGIN_SRC emacs-lisp 
-(use-package avy 
-;; which allows you jump you cursor suprisingly fast
-:ensure t
-:bind ("M-s" . avy-goto-char))
+	(use-package avy 
+	;; which allows you jump you cursor suprisingly fast
+	:ensure t
+	:bind ("M-s" . avy-goto-char))
   #+END_SRC 
+
 * swiper
-# 优化minibuffer的搜索和补全体验
+  # 优化minibuffer的搜索和补全体验
   #+BEGIN_SRC emacs-lisp
 
 
-(use-package counsel
-;; ivy-mode ensures that any Emacs command using completing-read-function uses ivy for completion
-;; Counsel take this futher, providing versions of common Emacs commands that are customized to make the best use of ivy
-;; for example, counsel-find-file has some additional keybindings. Pressing [DEL] will move you to the parent directory
-:ensure t
-  :bind
-  (("M-y" . counsel-yank-pop)
-   :map ivy-minibuffer-map
-   ("M-y" . ivy-next-line)))
+	(use-package counsel
+	;; ivy-mode ensures that any Emacs command using completing-read-function uses ivy for completion
+	;; Counsel take this futher, providing versions of common Emacs commands that are customized to make the best use of ivy
+	;; for example, counsel-find-file has some additional keybindings. Pressing [DEL] will move you to the parent directory
+	:ensure t
+	  :bind
+	  (("M-y" . counsel-yank-pop)
+	   :map ivy-minibuffer-map
+	   ("M-y" . ivy-next-line)))
 
 
 
 
-(use-package ivy 
-;; ivy is a generic completion mechanism for Emacs
-  :ensure t
-  :diminish (ivy-mode) 
-  :bind (("C-x b" . ivy-switch-buffer)) ;; keybindings 
-  :config ;; executed after loading, :init will be executed before loading
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "%d/%d ")
-  (setq ivy-display-style 'fancy))
+	(use-package ivy 
+	;; ivy is a generic completion mechanism for Emacs
+	  :ensure t
+	  :diminish (ivy-mode) 
+	  :bind (("C-x b" . ivy-switch-buffer)) ;; keybindings 
+	  :config ;; executed after loading, :init will be executed before loading
+	  (ivy-mode 1)
+	  (setq ivy-use-virtual-buffers t)
+	  (setq ivy-count-format "%d/%d ")
+	  (setq ivy-display-style 'fancy))
 
 
-(use-package swiper 
-;; flexible, simple tools for minibuffer completion in Emacs
-  :ensure t
-  :bind (("C-s" . swiper-isearch)
-  ("C-r" . swiper-isearch)
-  ("C-c C-r" . ivy-resume)
-  ("M-x" . counsel-M-x)
-  ("C-x C-f" . counsel-find-file))
-  :config
-  (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-display-style 'fancy)
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-    ))
+	(use-package swiper 
+	;; flexible, simple tools for minibuffer completion in Emacs
+	  :ensure t
+	  :bind (("C-s" . swiper-isearch)
+	  ("C-r" . swiper-isearch)
+	  ("C-c C-r" . ivy-resume)
+	  ("M-x" . counsel-M-x)
+	  ("C-x C-f" . counsel-find-file))
+	  :config
+	  (progn
+		(ivy-mode 1)
+		(setq ivy-use-virtual-buffers t)
+		(setq ivy-display-style 'fancy)
+		(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+		))
   #+END_SRC
+
 * smartparens
   #+BEGIN_SRC emacs-lisp
 
-(use-package smartparens
-;; minor mode for Emacs for dealing with pairs in Emacs
-:ensure t
-  :hook (prog-mode . smartparens-mode) ;; the :hook keyword allows adding functions onto package hooks.
-  :custom ;; the custom keyword allows customization of package custom variable
-  ;; these are only for people who wish to keep customizations with their accompanying use-package declarations
-  ;; the only benefit overing using setq in :config block is that customization might execute code when values are assigned
-  (sp-escape-quotes-after-insert nil)
-  :config
-  (require 'smartparens-config))
+	(use-package smartparens
+	;; minor mode for Emacs for dealing with pairs in Emacs
+	:ensure t
+	  :hook (prog-mode . smartparens-mode) ;; the :hook keyword allows adding functions onto package hooks.
+	  :custom ;; the custom keyword allows customization of package custom variable
+	  ;; these are only for people who wish to keep customizations with their accompanying use-package declarations
+	  ;; the only benefit overing using setq in :config block is that customization might execute code when values are assigned
+	  (sp-escape-quotes-after-insert nil)
+	  :config
+	  (require 'smartparens-config))
 
-  (show-paren-mode t)
+	  (show-paren-mode t)
   #+END_SRC
+
 * switch window
   #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
+	(global-set-key (kbd "C-c <left>")  'windmove-left)
+	(global-set-key (kbd "C-c <right>") 'windmove-right)
+	(global-set-key (kbd "C-c <up>")    'windmove-up)
+	(global-set-key (kbd "C-c <down>")  'windmove-down)
   #+END_SRC 
+
 * misc packages 
   #+BEGIN_SRC emacs-lisp
-; highlight the current cursor line
-(global-hl-line-mode t) ;; highlight current line
-;(set-face-background 'hl-line "#3e4456") ;; customize current line face
-; flash the cursor's line when you scroll
-(use-package beacon ;; 当前行淡入淡出特效
-:ensure t
-:config 
-(beacon-mode 1)
-)
+	; highlight the current cursor line
+	(global-hl-line-mode t) ;; highlight current line
+	;(set-face-background 'hl-line "#3e4456") ;; customize current line face
+	; flash the cursor's line when you scroll
+	(use-package beacon ;; 当前行淡入淡出特效
+	:ensure t
+	:config 
+	(beacon-mode 1)
+	)
   #+END_SRC
+
 * undo tree
   #+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-:ensure t
-:config
-(global-undo-tree-mode t))
+	(use-package undo-tree
+	:ensure t
+	:config
+	(global-undo-tree-mode t))
   #+END_SRC 
+
 * theme
-#+BEGIN_SRC emacs-lisp
-(use-package zenburn-theme
-:ensure t
-:config
-(load-theme 'gruvbox-light-soft t))
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	(use-package zenburn-theme
+	:ensure t
+	:config
+	(load-theme 'gruvbox-light-soft t))
+  #+END_SRC
+
 * company
   #+BEGIN_SRC emacs-lisp
-;; company is a text completion framework for Emacs, the name stands for "complete anything", It uses
-;; pluggable back-ends and front-ends to retrieve and display completion candidates.
+	;; company is a text completion framework for Emacs, the name stands for "complete anything", It uses
+	;; pluggable back-ends and front-ends to retrieve and display completion candidates.
 
-(use-package company
-:ensure t
-:config 
-(setq company-idle-delay 0)
-(setq company-minimum-prefix-length 3)
-(global-company-mode t)
-)
+	(use-package company
+	:ensure t
+	:config 
+	(setq company-idle-delay 0)
+	(setq company-minimum-prefix-length 3)
+	(global-company-mode t)
+	)
 
-(use-package company-jedi ;; install python jedi first
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook 'jedi:setup)
-    )
+	(use-package company-jedi ;; install python jedi first
+		:ensure t
+		:config
+		(add-hook 'python-mode-hook 'jedi:setup)
+		)
 
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi)) ;; register company-jedi to company-backends
+	(defun my/python-mode-hook ()
+	  (add-to-list 'company-backends 'company-jedi)) ;; register company-jedi to company-backends
 
-(add-hook 'python-mode-hook 'my/python-mode-hook) ;; add functions to python-mode-hook
+	(add-hook 'python-mode-hook 'my/python-mode-hook) ;; add functions to python-mode-hook
   #+END_SRC
+
 * flycheck 
   #+BEGIN_SRC emacs-lisp
-(use-package flycheck ;; for syntax checking
-:ensure t
-:config
-(global-flycheck-mode t))
+	(use-package flycheck ;; for syntax checking
+	:ensure t
+	:config
+	(global-flycheck-mode t))
   #+END_SRC 
+
 * autocomplete
   #+BEGIN_SRC emacs-lisp 
-     (use-package auto-complete 
-       :ensure t
-       :config
-       (progn
-         (ac-config-default)
-         (global-auto-complete-mode t)
-         ))
+	(use-package auto-complete 
+	  :ensure t
+	  :config
+	  (progn
+		(ac-config-default)
+		(global-auto-complete-mode t)
+		))
   #+END_SRC
 
 * iedit and narrow / widen dwim
   #+BEGIN_SRC emacs-lisp
-; mark and edit all copies of the marked region simultaniously. 
-(use-package iedit
-:ensure t)
+	; mark and edit all copies of the marked region simultaniously. 
+	(use-package iedit
+	:ensure t)
 
-; if you're windened, narrow to the region, if you're narrowed, widen
-; bound to C-x n
-(defun narrow-or-widen-dwim (p)
-"If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
-Intelligently means: region, org-src-block, org-subtree, or defun,
-whichever applies first.
-Narrowing to org-src-block actually calls `org-edit-src-code'.
+	; if you're windened, narrow to the region, if you're narrowed, widen
+	; bound to C-x n
+	(defun narrow-or-widen-dwim (p)
+	"If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
+	Intelligently means: region, org-src-block, org-subtree, or defun,
+	whichever applies first.
+	Narrowing to org-src-block actually calls `org-edit-src-code'.
 
-With prefix P, don't widen, just narrow even if buffer is already
-narrowed."
-(interactive "P")
-(declare (interactive-only))
-(cond ((and (buffer-narrowed-p) (not p)) (widen))
-((region-active-p)
-(narrow-to-region (region-beginning) (region-end)))
-((derived-mode-p 'org-mode)
-;; `org-edit-src-code' is not a real narrowing command.
-;; Remove this first conditional if you don't want it.
-(cond ((ignore-errors (org-edit-src-code))
-(delete-other-windows))
-((org-at-block-p)
-(org-narrow-to-block))
-(t (org-narrow-to-subtree))))
-(t (narrow-to-defun))))
+	With prefix P, don't widen, just narrow even if buffer is already
+	narrowed."
+	(interactive "P")
+	(declare (interactive-only))
+	(cond ((and (buffer-narrowed-p) (not p)) (widen))
+	((region-active-p)
+	(narrow-to-region (region-beginning) (region-end)))
+	((derived-mode-p 'org-mode)
+	;; `org-edit-src-code' is not a real narrowing command.
+	;; Remove this first conditional if you don't want it.
+	(cond ((ignore-errors (org-edit-src-code))
+	(delete-other-windows))
+	((org-at-block-p)
+	(org-narrow-to-block))
+	(t (org-narrow-to-subtree))))
+	(t (narrow-to-defun))))
 
-;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
-;; This line actually replaces Emacs' entire narrowing keymap, that's
-;; how much I like this command. Only copy it if that's what you want.
-(define-key ctl-x-map "n" #'narrow-or-widen-dwim)
+	;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
+	;; This line actually replaces Emacs' entire narrowing keymap, that's
+	;; how much I like this command. Only copy it if that's what you want.
+	(define-key ctl-x-map "n" #'narrow-or-widen-dwim)
   #+END_SRC
+
 * treemacs
   #+BEGIN_SRC emacs-lisp
-(use-package treemacs
-;; treemacs is a file and project exlporer similar to NeoTree or vim's NerdTree, but largely inspired by the Project Exlporer in Eclipse.
-  :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay      0.5
-          treemacs-directory-name-transformer    #'identity
-          treemacs-display-in-side-window        t
-          treemacs-eldoc-display                 t
-          treemacs-file-event-delay              5000
-          treemacs-file-extension-regex          treemacs-last-period-regex-value
-          treemacs-file-follow-delay             0.2
-          treemacs-file-name-transformer         #'identity
-          treemacs-follow-after-init             t
-          treemacs-git-command-pipe              ""
-          treemacs-goto-tag-strategy             'refetch-index
-          treemacs-indentation                   2
-          treemacs-indentation-string            " "
-          treemacs-is-never-other-window         nil
-          treemacs-max-git-entries               5000
-          treemacs-missing-project-action        'ask
-          treemacs-move-forward-on-expand        nil
-          treemacs-no-png-images                 nil
-          treemacs-no-delete-other-windows       t
-          treemacs-project-follow-cleanup        nil
-          treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                      'left
-          treemacs-read-string-input             'from-child-frame
-          treemacs-recenter-distance             0.1
-          treemacs-recenter-after-file-follow    nil
-          treemacs-recenter-after-tag-follow     nil
-          treemacs-recenter-after-project-jump   'always
-          treemacs-recenter-after-project-expand 'on-distance
-          treemacs-show-cursor                   nil
-          treemacs-show-hidden-files             t
-          treemacs-silent-filewatch              nil
-          treemacs-silent-refresh                nil
-          treemacs-sorting                       'alphabetic-asc
-          treemacs-space-between-root-nodes      t
-          treemacs-tag-follow-cleanup            t
-          treemacs-tag-follow-delay              1.5
-          treemacs-user-mode-line-format         nil
-          treemacs-user-header-line-format       nil
-          treemacs-width                         35
-          treemacs-workspace-switch-cleanup      nil)
+	(use-package treemacs
+	;; treemacs is a file and project exlporer similar to NeoTree or vim's NerdTree, but largely inspired by the Project Exlporer in Eclipse.
+	  :ensure t
+	  :defer t
+	  :init
+	  (with-eval-after-load 'winum
+		(define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+	  :config
+	  (progn
+		(setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+			  treemacs-deferred-git-apply-delay      0.5
+			  treemacs-directory-name-transformer    #'identity
+			  treemacs-display-in-side-window        t
+			  treemacs-eldoc-display                 t
+			  treemacs-file-event-delay              5000
+			  treemacs-file-extension-regex          treemacs-last-period-regex-value
+			  treemacs-file-follow-delay             0.2
+			  treemacs-file-name-transformer         #'identity
+			  treemacs-follow-after-init             t
+			  treemacs-git-command-pipe              ""
+			  treemacs-goto-tag-strategy             'refetch-index
+			  treemacs-indentation                   2
+			  treemacs-indentation-string            " "
+			  treemacs-is-never-other-window         nil
+			  treemacs-max-git-entries               5000
+			  treemacs-missing-project-action        'ask
+			  treemacs-move-forward-on-expand        nil
+			  treemacs-no-png-images                 nil
+			  treemacs-no-delete-other-windows       t
+			  treemacs-project-follow-cleanup        nil
+			  treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+			  treemacs-position                      'left
+			  treemacs-read-string-input             'from-child-frame
+			  treemacs-recenter-distance             0.1
+			  treemacs-recenter-after-file-follow    nil
+			  treemacs-recenter-after-tag-follow     nil
+			  treemacs-recenter-after-project-jump   'always
+			  treemacs-recenter-after-project-expand 'on-distance
+			  treemacs-show-cursor                   nil
+			  treemacs-show-hidden-files             t
+			  treemacs-silent-filewatch              nil
+			  treemacs-silent-refresh                nil
+			  treemacs-sorting                       'alphabetic-asc
+			  treemacs-space-between-root-nodes      t
+			  treemacs-tag-follow-cleanup            t
+			  treemacs-tag-follow-delay              1.5
+			  treemacs-user-mode-line-format         nil
+			  treemacs-user-header-line-format       nil
+			  treemacs-width                         35
+			  treemacs-workspace-switch-cleanup      nil)
 
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
+		;; The default width and height of the icons is 22 pixels. If you are
+		;; using a Hi-DPI display, uncomment this to double the icon size.
+		;;(treemacs-resize-icons 44)
 
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always)
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null treemacs-python-executable)))
-      (`(t . t)
-       (treemacs-git-mode 'deferred))
-      (`(t . _)
-       (treemacs-git-mode 'simple))))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+		(treemacs-follow-mode t)
+		(treemacs-filewatch-mode t)
+		(treemacs-fringe-indicator-mode 'always)
+		(pcase (cons (not (null (executable-find "git")))
+					 (not (null treemacs-python-executable)))
+		  (`(t . t)
+		   (treemacs-git-mode 'deferred))
+		  (`(t . _)
+		   (treemacs-git-mode 'simple))))
+	  :bind
+	  (:map global-map
+			("M-0"       . treemacs-select-window)
+			("C-x t 1"   . treemacs-delete-other-windows)
+			("C-x t t"   . treemacs)
+			("C-x t B"   . treemacs-bookmark)
+			("C-x t C-t" . treemacs-find-file)
+			("C-x t M-t" . treemacs-find-tag)))
 
-(use-package treemacs-evil
-  :after (treemacs evil)
-  :ensure t)
+	(use-package treemacs-evil
+	  :after (treemacs evil)
+	  :ensure t)
 
-(use-package treemacs-projectile
-  :after (treemacs projectile)
-  :ensure t)
+	(use-package treemacs-projectile
+	  :after (treemacs projectile)
+	  :ensure t)
 
-(use-package treemacs-icons-dired
-  :after (treemacs dired)
-  :ensure t
-  :config (treemacs-icons-dired-mode))
+	(use-package treemacs-icons-dired
+	  :after (treemacs dired)
+	  :ensure t
+	  :config (treemacs-icons-dired-mode))
 
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
+	(use-package treemacs-magit
+	  :after (treemacs magit)
+	  :ensure t)
 
-(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-  :ensure t
-  :config (treemacs-set-scope-type 'Perspectives))
+	(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+	  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+	  :ensure t
+	  :config (treemacs-set-scope-type 'Perspectives))
   #+END_SRC
+
 * webmode
   #+BEGIN_SRC emacs-lisp
- (use-package web-mode
-    :ensure t
-    :config
-       (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-       (setq web-mode-engines-alist
-       '(("django"    . "\\.html\\'")))
-       (setq web-mode-ac-sources-alist
-       '(("css" . (ac-source-css-property))
-       ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-       (setq web-mode-enable-auto-closing t))
-       (setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
+	(use-package web-mode
+	   :ensure t
+	   :config
+		  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+		  (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+		  (setq web-mode-engines-alist
+		  '(("django"    . "\\.html\\'")))
+		  (setq web-mode-ac-sources-alist
+		  '(("css" . (ac-source-css-property))
+		  ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+		  (setq web-mode-enable-auto-closing t))
+		  (setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
   #+END_SRC
+
 * better-shell
-#+BEGIN_SRC emacs-lisp
-  (use-package better-shell
-		:ensure t)
-  (add-hook 'shell-mode-hook (lambda() 
-				   (company-mode -1)) 'append)
+  #+BEGIN_SRC emacs-lisp
+	(use-package better-shell
+			  :ensure t)
+	(add-hook 'shell-mode-hook (lambda() 
+					 (company-mode -1)) 'append)
 
-  (defun my-clear ()
-		(interactive)
-		(erase-buffer)
-		(comint-send-input))
+	(defun my-clear ()
+			  (interactive)
+			  (erase-buffer)
+			  (comint-send-input))
 
-  (defun my-shell-hook ()
-		(local-set-key (kbd "C-l") 'my-clear))
+	(defun my-shell-hook ()
+			  (local-set-key (kbd "C-l") 'my-clear))
 
-  (add-hook 'shell-mode-hook 'my-shell-hook)
-#+END_SRC
-* git
-#+BEGIN_SRC emacs-lisp
- (use-package magit 
- :ensure t
- :init 
- (progn
- (bind-key "C-x g" 'magit-status)))
-#+END_SRC
+	(add-hook 'shell-mode-hook 'my-shell-hook)
+  #+END_SRC
+
+* git  
+  #+BEGIN_SRC emacs-lisp
+	(use-package magit 
+	:ensure t
+	:init 
+	(progn
+	(bind-key "C-x g" 'magit-status)))
+  #+END_SRC
+
 * python
 
-#+BEGIN_SRC shell
-pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
-#+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (setq py-python-command "python3")
-  (setq python-shell-interpreter "python3")
+  首先安装需要的pip依赖
 
-  (use-package elpy
-	;; elpy is the Emacs Python Development Environment. it aims to provide an easy to install, fully-featured environment for Python development
-	:ensure t
-	:init
-	(add-hook 'python-mode-hook (lambda ()
-				  (setq tab-width 4) 
-				  (setq indent-tabs-mode t)
-				  (setq py-indent-tabs-mode t)
-				  (setq python-indent-offset 4)))
-	:custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
-	:config 
-	(elpy-enable)
-	(setq elpy-rpc-python-command "/usr/bin/python3")
-	)
+  #+BEGIN_SRC shell
+	pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
+  #+END_SRC
 
-  (use-package virtualenvwrapper
-	:ensure t
-	:config 
-	(venv-initialize-interactive-shells)
-	(venv-initialize-eshell))
+  #+BEGIN_SRC emacs-lisp
+	(setq py-python-command "python3")
+	(setq python-shell-interpreter "python3")
 
-  (use-package jedi
-	:ensure t
-	:init
-	(add-hook 'python-mode-hook 'jedi:setup)
-	(add-hook 'python-mode-hook 'jedi:ac-setup))
+	(use-package elpy
+		  ;; elpy is the Emacs Python Development Environment. it aims to provide an easy to install, fully-featured environment for Python development
+		  :ensure t
+		  :init
+		  (add-hook 'python-mode-hook (lambda ()
+					(setq tab-width 4) 
+					(setq indent-tabs-mode t)
+					(setq py-indent-tabs-mode t)
+					(setq python-indent-offset 4)))
+		  :custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
+		  :config 
+		  (elpy-enable)
+		  (setq elpy-rpc-python-command "/usr/bin/python3")
+		  )
 
-#+END_SRC
+	(use-package virtualenvwrapper
+		  :ensure t
+		  :config 
+		  (venv-initialize-interactive-shells)
+		  (venv-initialize-eshell))
 
-然后需要执行M-x jedi:install-server
+	(use-package jedi
+		  :ensure t
+		  :init
+		  (add-hook 'python-mode-hook 'jedi:setup)
+		  (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  #+END_SRC
+
+  然后需要执行M-x jedi:install-server
 
 * atomic-chrome
-# 在浏览器中使用emacs
-#+BEGIN_SRC emacs-lisp
-(use-package atomic-chrome
-:ensure t
-:config
-(atomic-chrome-start-server))
-#+END_SRC
+  # 在浏览器中使用emacs
+  #+BEGIN_SRC emacs-lisp
+	(use-package atomic-chrome
+	:ensure t
+	:config
+	(atomic-chrome-start-server))
+  #+END_SRC
+
 * others
-#+BEGIN_SRC emacs-lisp
-;; 转页时防止cursor跳到中间
-(setq scroll-margin 3
-      scroll-conservatively 101
-      scroll-up-aggressively 0.01
-      scroll-down-aggressively 0.01
-      scroll-preserve-screen-position t
-      auto-window-vscroll nil)
-(global-display-line-numbers-mode)
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	;; 转页时防止cursor跳到中间
+	(setq scroll-margin 3
+		  scroll-conservatively 101
+		  scroll-up-aggressively 0.01
+		  scroll-down-aggressively 0.01
+		  scroll-preserve-screen-position t
+		  auto-window-vscroll nil)
+	(global-display-line-numbers-mode)
+  #+END_SRC
 
 * htmlize
-#+BEGIN_SRC emacs-lisp
-(use-package htmlize
-:ensure t)
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	(use-package htmlize
+	:ensure t)
+  #+END_SRC
+
 * nyan-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package nyan-mode
-    :ensure t
-    :config
-    (nyan-mode t))
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	(use-package nyan-mode
+	  :ensure t
+	  :config
+	  (nyan-mode t))
+  #+END_SRC
 
 * go
+
+  需要先安装gopls
+  #+BEGIN_SRC shell
+	go install golang.org/x/tools/gopls@latest
+  #+END_SRC
   
-#+BEGIN_SRC emacs-lisp
-  (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  #+BEGIN_SRC emacs-lisp
+	(defun lsp-go-install-save-hooks ()
+	  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+	  (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-  (use-package lsp-mode
-    :ensure t
-    :init
-    (add-hook 'go-mode-hook #'lsp-deferred)
-    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-    (add-hook 'go-mode-hook (lambda() (company-mode -1)))
-    (add-hook 'go-mode-hook (lambda() (auto-complete-mode -1)))
-    (add-hook 'go-mode-hook (lambda()
-			      (setq tab-width 4)
-			      (setq indent-tabs-mode 1)))
-    :config
-    (lsp-register-custom-settings
-     '(("gopls.completeUnimported" t t)
-       ("gopls.staticcheck" t t))))
+	(use-package lsp-mode
+	  :ensure t
+	  :init
+	  (add-hook 'go-mode-hook #'lsp-deferred)
+	  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+	  (add-hook 'go-mode-hook (lambda() (company-mode -1)))
+	  (add-hook 'go-mode-hook (lambda() (auto-complete-mode -1)))
+	  (add-hook 'go-mode-hook (lambda()
+					(setq tab-width 4)
+					(setq indent-tabs-mode 1)))
+	  :config
+	  (lsp-register-custom-settings
+	   '(("gopls.completeUnimported" t t)
+		 ("gopls.staticcheck" t t))))
 
-  (use-package lsp-ui
-    :ensure t)
-#+END_SRC
+	(use-package lsp-ui
+	  :ensure t)
+  #+END_SRC  
+
 * agenda
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files '("~/agenda"))
-#+END_SRC
+  #+BEGIN_SRC emacs-lisp
+	(setq org-agenda-files '("~/agenda"))
+  #+END_SRC
+
 * dot
   #+BEGIN_SRC emacs-lisp
 	(use-package graphviz-dot-mode
@@ -473,6 +510,7 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 	  (setq graphviz-dot-indent-width 4))
 	(use-package company-graphviz-dot)
   #+END_SRC 
+
 * powerline
 
   #+BEGIN_SRC emacs-lisp
@@ -481,3 +519,4 @@ pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
 	  :config
 	  (powerline-default-theme))
   #+END_SRC
+
