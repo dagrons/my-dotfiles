@@ -520,3 +520,99 @@
 	  (powerline-default-theme))
   #+END_SRC
 
+* ob-rasm2
+  这个插件能让我们在emacs中编译shellcode
+  先安装r2, 注意需要root权限
+  #+BEGIN_SRC shell
+	cd /opt && su root -c "git clone https://github.com/radareorg/radare2"
+	cd radare2 ; su root -c "sys/install.sh"
+  #+END_SRC 
+
+  #+BEGIN_SRC emacs-lisp
+	(require 'ob)
+
+	(defconst org-babel-header-args:rasm2
+	  '((:arch . :any)
+		(:bits  . :any)
+		(:disasm . :any)
+		)
+	  "Rasm2 specific header arguments.")
+
+
+	(defun org-babel-execute:rasm2 (body params)
+	  "Execute a block code with Org Babel.
+	BODY is the source inside the source block and PARAMS is an
+	association list over the source block configurations.  This
+	function is called by `org-babel-execute-src-block'."
+
+	  (let* ((arch (cdr (assq :arch params)))
+		 (bits (cdr (assq :bits params))))
+		(if  (assq :disasm params)
+		(shell-command-to-string
+		 (concat "rasm2 -a  " arch " -b " (number-to-string bits) " -d \"" body "\"" ))
+		  (with-temp-buffer
+		(insert (shell-command-to-string
+			 (concat "rasm2 -C -a " arch " -b " (number-to-string bits) " \"" body "\"" )))
+		(goto-char (point-min))
+		(while (re-search-forward "\"" nil t )
+		  (replace-match ""))
+		(goto-char (point-min))
+		(while (re-search-forward "\n" nil t )
+		  (replace-match ""))
+		(buffer-string)
+		)))
+	  )
+  #+END_SRC
+    
+* exec-path-from-shell
+  这个插件是为了让在GUI环境下启动的emacs和shell的环境变量一致
+  #+BEGIN_SRC emacs-lisp
+	(use-package exec-path-from-shell
+	  :ensure t
+	  :config
+	  (dolist (var '("WORKON_HOME" "SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+		(add-to-list 'exec-path-from-shell-variables var))
+	  (when (memq window-system '(mac ns x))
+		(exec-path-from-shell-initialize))
+	  )
+  #+END_SRC
+
+* prodigy
+  #+BEGIN_SRC emacs-lisp
+	(use-package prodigy
+	  :ensure t
+	  :config
+	  (prodigy-define-service
+		:name "nikola"
+		:command "nikola"
+		:args '("auto")
+		:cwd "/home/dell/dagrons.github.io"
+		:port 8000
+		:tags '(blog nikola)
+		:stop-signal 'sigint
+		:kill-process-buffer-on-stop t))
+  #+END_SRC
+
+* nikola
+  用来写博客的
+
+  创建虚拟环境
+  #+BEGIN_SRC shell
+	mkenv blog -p python3
+  #+END_SRC
+  
+  #+BEGIN_SRC shell
+	pip3 install nikola aiohttp watchdog
+  #+END_SRC  
+ 
+  安装nikola的orgmode插件
+  #+BEGIN_SRC shell
+	nikola plugin -i orgmode
+  #+END_SRC 
+
+  #+BEGIN_SRC emacs-lisp
+	(defun z/nikola-deploy () ""
+		   (interactive)
+		   (venv-with-virtualenv "blog" (shell-command "cd ~/dagrons.github.io; nikola github_deploy")))
+  #+END_SRC
+
