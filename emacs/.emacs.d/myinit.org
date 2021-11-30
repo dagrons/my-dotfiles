@@ -38,6 +38,9 @@
 	(use-package ob-go
 	  :ensure t)
 
+	(use-package ob-http
+	  :ensure t)
+
 	(setq org-confirm-babel-evaluate nil)
 
 	(org-babel-do-load-languages
@@ -160,6 +163,9 @@
 * theme
   #+BEGIN_SRC emacs-lisp
 	(use-package zenburn-theme
+	:ensure t)
+
+	(use-package gruvbox-theme
 	:ensure t
 	:config
 	(load-theme 'gruvbox-light-soft t))
