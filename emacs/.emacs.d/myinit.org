@@ -399,7 +399,7 @@
   首先安装需要的pip依赖
 
   #+BEGIN_SRC shell
-	pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8
+	pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8 yapf
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp
