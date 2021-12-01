@@ -399,7 +399,7 @@
   首先安装需要的pip依赖
 
   #+BEGIN_SRC shell
-	pip3 install pylint jedi virtualenv rope importmagic autopep8 flake8 yapf
+	pip3 install pylint jedi virtualenv rope importmagic flake8 yapf
   #+END_SRC
 
   #+BEGIN_SRC emacs-lisp
@@ -411,9 +411,9 @@
 		  :ensure t
 		  :init
 		  (add-hook 'python-mode-hook (lambda ()
-					(setq tab-width 4) 
-					(setq indent-tabs-mode t)
-					(setq py-indent-tabs-mode t)
+					(setq tab-width 8) 
+					(setq indent-tabs-mode nil)
+					(setq py-indent-tabs-mode nil)
 					(setq python-indent-offset 4)))
 		  :custom (elpy-rpc-backend "jedi") ;; see "company" section for more details
 		  :config 
@@ -622,3 +622,8 @@
 		   (venv-with-virtualenv "blog" (shell-command "cd ~/dagrons.github.io; nikola github_deploy")))
   #+END_SRC
 
+* yaml
+  #+BEGIN_SRC emacs-lisp
+	(use-package yaml-mode
+	  :ensure t)
+  #+END_SRC
