@@ -206,3 +206,5 @@ export LC_CTYPE="zh_CN.UTF-8"
 export PATH=/opt/freemind:$PATH
 
 alias ll="ls -l"
+
+export PATH=~/.local/bin:$PATH
