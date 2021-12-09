@@ -56,6 +56,26 @@
 	(use-package ox-freemind)
 
 	(global-set-key (kbd "C-c a") 'org-agenda)
+
+	(defun org-babel-tangle-from-edit-special () ;; org-edit-src-mode 下tangle当前block
+		(interactive)
+		(org-edit-src-exit)
+		(let ((current-prefix-arg '(4)))
+		  (call-interactively 'org-babel-tangle))
+		(org-edit-special))
+
+	(add-hook 'org-src-mode-hook
+	  (lambda ()
+		(local-set-key [f9] 'org-babel-tangle-from-edit-special)))
+
+	(defun org-babel-tangle-block() ;; tangle当前block
+	  (interactive)
+	  (let ((current-prefix-arg '(4)))
+		(call-interactively 'org-babel-tangle)))
+
+	(add-hook 'org-mode-hook
+		  (lambda ()
+			(local-set-key [f9] 'org-babel-tangle-block)))
   #+END_SRC
 
 * ivy
@@ -627,4 +647,5 @@
 	(use-package yaml-mode
 	  :ensure t)
   #+END_SRC
+
 
