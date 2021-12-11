@@ -648,4 +648,44 @@
 	  :ensure t)
   #+END_SRC
 
+* bibtex
+
+  #+BEGIN_SRC emacs-lisp
+	;; Change fields and format
+	(setq bibtex-user-optional-fields '(("keywords" "Keywords to describe the entry" "")
+						("file" "Link to document file." ":"))
+		  bibtex-align-at-equal-sign t)
+
+	(setq bib-files-directory (directory-files
+				   (concat (getenv "HOME") "/Documents/bibliography") t
+				   "^[A-Z|a-z]+.bib$"))
+	(setq pdf-files-directory (concat (getenv "HOME") "/Documents/bibliography/pdf"))
+
+	(setq org-directory (concat (getenv "HOME") "/Documents/bibliography/org"))
+
+	(use-package helm-bibtex
+	  :ensure t
+	  :config
+	  (setq bibtex-completion-bibliography bib-files-directory)
+	  (setq bibtex-completion-library-path pdf-files-directory)
+	  (setq bibtex-completion-pdf-field "File")
+	  (setq bibtex-completion-notes-path org-directory)
+	  (setq bibtex-completion-additional-search-fields '(keywords))
+	  :bind
+	  (("C-c n B" . helm-bibtex)))
+  #+END_SRC
+
+* open-with
+
+  #+BEGIN_SRC emacs-lisp
+	(use-package openwith
+	  :ensure t
+	  :config
+	  (setq openwith-associations '(("\\.pdf\\'" "microsoft-edge" (file))))
+	  (openwith-mode t))
+
+
+	(setq browse-url-browser-function 'browse-url-generic
+		  browse-url-generic-program "microsoft-edge")
+  #+END_SRC 
 
