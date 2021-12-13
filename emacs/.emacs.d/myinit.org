@@ -655,12 +655,10 @@
 	(setq bibtex-user-optional-fields '(("keywords" "Keywords to describe the entry" "")
 						("file" "Link to document file." ":"))
 		  bibtex-align-at-equal-sign t)
-
 	(setq bib-files-directory (directory-files
 				   (concat (getenv "HOME") "/Documents/bibliography") t
 				   "^[A-Z|a-z]+.bib$"))
 	(setq pdf-files-directory (concat (getenv "HOME") "/Documents/bibliography/pdf"))
-
 	(setq org-directory (concat (getenv "HOME") "/Documents/bibliography/org"))
 
 	(use-package helm-bibtex
@@ -689,3 +687,27 @@
 		  browse-url-generic-program "microsoft-edge")
   #+END_SRC 
 
+* org-ref
+
+  #+BEGIN_SRC emacs-lisp
+	(use-package org-ref
+	  :ensure t
+	  :init
+	  (setq org-ref-default-bibliography bib-files-directory)
+	  (setq org-ref-pdf-directory pdf-files-directory)
+	  (setq org-ref-bibliography-notes org-directory))
+
+  #+END_SRC
+
+* citeproc
+  
+  #+BEGIN_SRC emacs-lisp
+	(use-package citeproc-org
+	  :ensure t
+	  :config 
+	  (citeproc-org-setup))
+
+  #+END_SRC
+
+
+  
