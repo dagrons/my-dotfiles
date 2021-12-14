@@ -18,7 +18,7 @@
 	(global-set-key (kbd "C-x C-b") 'ibuffer)
   #+END_SRC
 
-* org-mode
+* COMMENT org-mode
   freemind需要手动安装, go也需要预先在系统中安装
   go的安装脚本如下:
   #+BEGIN_SRC shell
@@ -41,6 +41,11 @@
 	(use-package ob-http
 	  :ensure t)
 
+	(use-package ox-reveal
+	  :ensure t)
+
+	(use-package ox-freemind)
+
 	(setq org-confirm-babel-evaluate nil)
 
 	(org-babel-do-load-languages
@@ -50,23 +55,21 @@
 					 (shell . t)
 					 (dot . t)
 					 (http . t)))
-	(use-package ox-reveal
-	  :ensure t)
-
-	(use-package ox-freemind)
 
 	(global-set-key (kbd "C-c a") 'org-agenda)
 
+
+	;; org-babel-tangle enhancement 
 	(defun org-babel-tangle-from-edit-special () ;; org-edit-src-mode 下tangle当前block
-		(interactive)
-		(org-edit-src-exit)
-		(let ((current-prefix-arg '(4)))
-		  (call-interactively 'org-babel-tangle))
-		(org-edit-special))
+	  (interactive)
+	  (org-edit-src-exit)
+	  (let ((current-prefix-arg '(4)))
+		(call-interactively 'org-babel-tangle))
+	  (org-edit-special))
 
 	(add-hook 'org-src-mode-hook
-	  (lambda ()
-		(local-set-key [f9] 'org-babel-tangle-from-edit-special)))
+		  (lambda ()
+			(local-set-key [f9] 'org-babel-tangle-from-edit-special)))
 
 	(defun org-babel-tangle-block() ;; tangle当前block
 	  (interactive)
@@ -76,6 +79,7 @@
 	(add-hook 'org-mode-hook
 		  (lambda ()
 			(local-set-key [f9] 'org-babel-tangle-block)))
+
   #+END_SRC
 
 * ivy
@@ -86,7 +90,7 @@
 	:ensure t
 	:bind ("M-s" . avy-goto-char))
   #+END_SRC 
-
+  
 * swiper
   # 优化minibuffer的搜索和补全体验
   #+BEGIN_SRC emacs-lisp
@@ -706,8 +710,37 @@
 	  :ensure t
 	  :config 
 	  (citeproc-org-setup))
+  #+END_SRC
+  
+* ox-publish
 
+  这个基本没怎么用过
+  #+BEGIN_SRC emacs-lisp
+	;; ox-publish
+	(use-package ox-publish
+	  :config  
+	  (setq org-publish-project-alist '(("org-notes"
+						 :base-directory "~/blog/org"
+						 :base-extension "org"
+						 :publishing-directory "~/public_html"
+						 :recursive t
+						 :publishing-function org-html-publish-to-html
+						 :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"/blog/comfy_inline.css\"/>"
+						 :autopreamble t
+						 :auto-sitemap t
+						 :timestamp nil
+						 :author nil
+						 :sitemap-filename "index.org"
+						 :sitemap-title "Nil")
+						("org-static"
+						 :base-directory "~/blog/org"
+						 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+						 :publishing-directory "~/public_html/"				     
+						 :recursive t
+						 :publishing-function org-publish-attachment)
+						("org" :components ("org-notes" "org-static"))))
+	  (setq org-html-validation-link nil)
+	  (setq org-html-link-home "/blog/index.html")
+	  (setq org-html-link-up "/blog/index.html"))
   #+END_SRC
 
-
-  
