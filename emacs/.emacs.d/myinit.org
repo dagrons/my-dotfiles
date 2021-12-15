@@ -18,7 +18,7 @@
 	(global-set-key (kbd "C-x C-b") 'ibuffer)
   #+END_SRC
 
-* COMMENT org-mode
+* org-mode
   freemind需要手动安装, go也需要预先在系统中安装
   go的安装脚本如下:
   #+BEGIN_SRC shell
@@ -192,7 +192,7 @@
 	(use-package gruvbox-theme
 	:ensure t
 	:config
-	(load-theme 'gruvbox-light-soft t))
+	(load-theme 'zenburn t))
   #+END_SRC
 
 * company
@@ -716,31 +716,30 @@
 
   这个基本没怎么用过
   #+BEGIN_SRC emacs-lisp
-	;; ox-publish
-	(use-package ox-publish
-	  :config  
-	  (setq org-publish-project-alist '(("org-notes"
-						 :base-directory "~/blog/org"
-						 :base-extension "org"
-						 :publishing-directory "~/public_html"
-						 :recursive t
-						 :publishing-function org-html-publish-to-html
-						 :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"/blog/comfy_inline.css\"/>"
-						 :autopreamble t
-						 :auto-sitemap t
-						 :timestamp nil
-						 :author nil
-						 :sitemap-filename "index.org"
-						 :sitemap-title "Nil")
-						("org-static"
-						 :base-directory "~/blog/org"
-						 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-						 :publishing-directory "~/public_html/"				     
-						 :recursive t
-						 :publishing-function org-publish-attachment)
-						("org" :components ("org-notes" "org-static"))))
-	  (setq org-html-validation-link nil)
-	  (setq org-html-link-home "/blog/index.html")
-	  (setq org-html-link-up "/blog/index.html"))
+    ;; ox-publish
+    (use-package ox-publish
+      :config  
+      (setq org-publish-project-alist '(("org-notes"
+					 :base-directory "~/blog/org"
+					 :base-extension "org"
+					 :publishing-directory "~/public_html"
+					 :recursive t
+					 :publishing-function org-html-publish-to-html
+					 :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"/blog/comfy_inline.css\"/>"
+					 :autopreamble t
+					 :timestamp nil
+					 :author nil
+					 :sitemap-filename "index.org"
+					 :sitemap-title "Nil")
+					("org-static"
+					 :base-directory "~/blog/org"
+					 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+					 :publishing-directory "~/public_html/"				     
+					 :recursive t
+					 :publishing-function org-publish-attachment)
+					("org" :components ("org-notes" "org-static"))))
+      (setq org-html-validation-link nil)
+      (setq org-html-link-home "/blog/index.html")
+      (setq org-html-link-up "/blog/index.html"))
   #+END_SRC
 
