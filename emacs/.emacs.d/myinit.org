@@ -192,7 +192,7 @@
 	(use-package gruvbox-theme
 	:ensure t
 	:config
-	(load-theme 'zenburn t))
+	(load-theme 'gruvbox-light-soft t))
   #+END_SRC
 
 * company
@@ -716,30 +716,29 @@
 
   这个基本没怎么用过
   #+BEGIN_SRC emacs-lisp
-    ;; ox-publish
-    (use-package ox-publish
-      :config  
-      (setq org-publish-project-alist '(("org-notes"
-					 :base-directory "~/blog/org"
-					 :base-extension "org"
-					 :publishing-directory "~/public_html"
-					 :recursive t
-					 :publishing-function org-html-publish-to-html
-					 :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"/blog/comfy_inline.css\"/>"
-					 :autopreamble t
-					 :timestamp nil
-					 :author nil
-					 :sitemap-filename "index.org"
-					 :sitemap-title "Nil")
-					("org-static"
-					 :base-directory "~/blog/org"
-					 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-					 :publishing-directory "~/public_html/"				     
-					 :recursive t
-					 :publishing-function org-publish-attachment)
-					("org" :components ("org-notes" "org-static"))))
-      (setq org-html-validation-link nil)
-      (setq org-html-link-home "/blog/index.html")
-      (setq org-html-link-up "/blog/index.html"))
+	;; ox-publish
+	(use-package ox-publish
+	  :config  
+	  (setq org-publish-project-alist '(("org-notes"
+						 :base-directory "~/blog/org"
+						 :base-extension "org"
+						 :publishing-directory "~/public_html"
+						 :recursive t
+						 :publishing-function org-html-publish-to-html
+						 :autopreamble t
+						 :timestamp nil
+						 :author nil
+						 :sitemap-filename "index.org"
+						 :sitemap-title "Nil")
+						("org-static"
+						 :base-directory "~/blog/org"
+						 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+						 :publishing-directory "~/public_html/"				     
+						 :recursive t
+						 :publishing-function org-publish-attachment)
+						("org" :components ("org-notes" "org-static"))))
+	  (setq org-html-validation-link nil)
+	  (setq org-html-link-home "/index.html")
+	  (setq org-html-link-up "/index.html"))
   #+END_SRC
 
