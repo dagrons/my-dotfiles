@@ -7,6 +7,10 @@ export PATH=/opt/homebrew/bin:$PATH
 pve="10.112.108.112"
 alias sshpve="ssh dell@${pve}"
 
+cld="120.53.125.30"
+alias sshcld="ssh ubuntu@${cld}"
+
+
 #=====
 # toys
 #=====
