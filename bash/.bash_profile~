@@ -4,8 +4,7 @@ export PATH=/opt/homebrew/bin:$PATH
 # devbox
 #=====
 
-pve="10.112.108.112"
-alias sshpve="ssh dell@${pve}"
+alias pve=10.112.108.112
 
 #=====
 # toys
