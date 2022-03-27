@@ -4,7 +4,18 @@ export PATH=/opt/homebrew/bin:$PATH
 # devbox
 #=====
 
-alias pve=10.112.108.112
+pve="10.112.108.112"
+alias sshpve="ssh dell@${pve}"
+alias pve="open https://10.112.108.112:8006"
+
+cld="120.53.125.30"
+alias sshcld="ssh ubuntu@${cld}"
+alias ms="open http://${cld}:6005"
+
+
+emc="10.112.254.160"
+alias sshemc="ssh dell@${emc} -p 61205"
+alias ks="open https://${emc}"
 
 #=====
 # toys
@@ -27,3 +38,8 @@ function play() {
 	docker exec -it toy-redis /bin/bash 
     fi
 }
+
+
+
+
+
