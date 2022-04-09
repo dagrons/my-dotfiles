@@ -16,8 +16,6 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -112,10 +110,22 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# deprecated proxy
+# 更推荐使用透明代理，用户不需要感知代理的存在
+#export socks_proxy=socks://localhost:7891 
+#export http_proxy=http://localhost:7890
 
-#==============
-# virtualenv
-#==============
+# node
+export PATH=$PATH:/usr/local/lib/node_modules/yarn/bin
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# ruby 
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# python
 export WORKON_HOME=~/envs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 if [ -e ~/.local/bin/virtualenvwrapper.sh ]; then
@@ -124,75 +134,17 @@ fi
 alias lsenv=lsvirtualenv
 alias mkenv=mkvirtualenv
 alias rmenv=rmvirtualenv
-
-#==============
-# yarn
-#==============
-export PATH=$PATH:/usr/local/lib/node_modules/yarn/bin
-
-#============
-# ruby
-#============
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-#===============
-# misc
-#===============
-alias e=emacsclient
-alias ex=exit
-alias eacs=emacs
-
-
-# 若安装了Docker for Windows，且启动了WSL 2后端
-export WINDOWS_HOST="host.docker.internal"
-# 若没有安装Docker for Windows，则可以从/etc/resolv.conf中读取Windows的IP
-# 这个IP有可能会变，所以不能直接一劳永逸。
-# export WINDOWS_HOST=$(grep nameserver /etc/resolv.conf | awk '{print $2}')
-# 可以尝试使用Windows的hostname，未尝试过
-# 但是我在Hyper-V虚拟机中使用hostname访问Windows有时候会遇到奇怪的卡住的问题，不推荐
-# export WINDOWS_HOST={你的Windows的hostname}
-# 下面的"地址"替换为之前记住的Windows上的X Server的地址，一般（以及上面的例子）是0:0
-# export DISPLAY="$WINDOWS_HOST:0"
-# export LIBGL_ALWAYS_INDIRECT=1
-
-#================
-# proxy
-#================
-#export socks_proxy=socks://localhost:7891
-#export http_proxy=http://localhost:7890
-
-
-#===============
-# rvm
-#===============
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-
-#================
-# flask
-#================
 export FLASK_ENV=development
 
-#================
-# explore.exe
-#================
-alias exp=explorer.exe
 
-
-#==================
 # go
-#==================
 export PATH=/usr/local/go/bin:$PATH
 export GOPATH="$(go env GOPATH)"
 export PATH=$GOPATH/bin:$PATH
 export GOPROXY=https://goproxy.cn
 
-#==================
+
 # docker
-#==================
 export DOCKER_CLIENT_TIMEOUT=600
 export COMPOSE_HTTP_TIMEOUT=600
 
@@ -200,11 +152,21 @@ export COMPOSE_HTTP_TIMEOUT=600
 export LANG="en_US.UTF-8"
 export LC_CTYPE="zh_CN.UTF-8"
 
-#================
+
 # freemind
-#=================
 export PATH=/opt/freemind:$PATH
-
 alias ll="ls -l"
-
 export PATH=~/.local/bin:$PATH
+
+# 在bash_histor中保留命令执行时间和执行者
+HISTSIZE=100000
+HISTFILESIZE=200000
+HISTTIMEFORMAT="%Y-%m-%d:%H-%M-%S:`whoami`:  "
+export HISTTIMEFORMAT
+
+
+# misc
+alias e=emacsclient
+alias ex=exit
+alias eacs=emacs
+alias tt="tree -L"

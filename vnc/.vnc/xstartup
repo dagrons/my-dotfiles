@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# 该文件用于创建xface远程桌面
 unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
 [ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
