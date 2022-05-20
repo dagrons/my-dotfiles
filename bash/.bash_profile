@@ -29,6 +29,7 @@ alias ks="open https://${emc}"
 alias ff="open http://$emc:8082"
 alias gg="open http://$cld:6005"
 alias mm="open https://$emc:10002"
+alias pp="open https://$pve:8006"
 
 
 
