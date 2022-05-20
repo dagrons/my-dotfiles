@@ -22,6 +22,16 @@ emc="10.112.254.160"
 alias sshemc="ssh dell@${emc} -p 61205"
 alias ks="open https://${emc}"
 
+
+#====
+# quick entries
+#====
+alias ff="open http://$emc:8082"
+alias gg="open http://$cld:6005"
+alias mm="open https://$emc:10002"
+
+
+
 #=====
 # toys
 #=====
@@ -48,3 +58,8 @@ function play() {
 
 
 
+
+# Setting PATH for Python 2.7
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
+export PATH
