@@ -135,6 +135,9 @@ alias lsenv=lsvirtualenv
 alias mkenv=mkvirtualenv
 alias rmenv=rmvirtualenv
 export FLASK_ENV=development
+export PATH="$PATH:$HOME/.pyenv/bin"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 
 # go
