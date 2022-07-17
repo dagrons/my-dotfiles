@@ -328,3 +328,4 @@
   :ensure t
   :bind ("M-s" . avy-goto-char))
 #+END_SRC
+
